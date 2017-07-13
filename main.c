@@ -75,6 +75,7 @@ void		starting_env(t_sct *f)
 void		starting_f(int	argc, char	**argv, t_sct *f)
 {
 	f->cursor = 0;
+	f->total_selected = 0;
 	f->arg_height = argc - 1;
 	f->objects = argv + 1;
 	f->arg_width = max_width(f->objects);
@@ -86,8 +87,9 @@ void		print_scren(t_sct *f)
 	int		i;
 
 	ft_termcmd("ti");
-	ft_termcmd("ve");
+	// ft_termcmd("ve");
 	i = -1;
+	// ft_printfcolor("Items selected: %d\n",f->total_selected, 32);
 	while (f->objects[++i])
 	{
 		if (i == f->cursor)
@@ -124,11 +126,38 @@ void		key_up_down(t_sct *f, long key)
 static void		key_space(t_sct *f, long key)
 {
 	if (f->select[f->cursor] == 0)
-
-		f->select[f->cursor] = 1;
+		{
+			f->select[f->cursor] = 1;
+			f->total_selected += 1;
+		}
 	else
+	{
 		f->select[f->cursor] = 0;
+		f->total_selected -= 1;
+	}
 	key_up_down(f, KEY_DOWN);
+}
+
+void		return_values(t_sct *f)
+{
+	int		i;
+	int		cont;
+
+	cont = 0;
+	i = -1;
+	ft_termcmd("ti");
+	while (f->objects[++i])
+	{
+		if (f->select[i] == 1)
+		{
+			ft_printfbasic("%s", f->objects[i]);
+			cont += 1;
+			if (cont != f->total_selected)
+				ft_putchar(' ');
+		}
+	}
+	ft_memdel((void**)&f->select);
+	exit (EXIT_SUCCESS);
 }
 
 void		read_key(t_sct *f)
@@ -149,7 +178,7 @@ void		read_key(t_sct *f)
 		else if (key == KEY_SPC)
 			key_space(f, key);
 		else if (key == KEY_ENTER)
-			printf("enter\n");
+			return_values(f);
 		else if (key == KEY_STAR || key == KEY_MINUS)
 			printf("minus\n");
 		else if (key == KEY_ESC)

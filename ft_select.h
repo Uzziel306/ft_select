@@ -27,6 +27,7 @@ typedef struct		s_sct
 	int				win_x;
 	int				win_y;
 	int				cursor;
+	int				total_selected;
 }					t_sct;
 
 #endif
