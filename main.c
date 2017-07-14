@@ -26,7 +26,7 @@ void	ft_termcmd(char *str)
 {
 	if (!str || !*str)
 		return ;
-	ft_putstr_fd(tgetstr(str, NULL), STDERR_FILENO);
+	ft_putstr_fd(tgetstr(str, NULL), 2);
 }
 
 void	ft_cursor_goto(int x, int y)
@@ -65,10 +65,8 @@ void		starting_env(t_sct *f)
 	f->term.c_cc[VMIN] = 1;
 	f->term.c_cc[VTIME] = 0;
 	tcsetattr(0, TCSADRAIN, &f->term);
-	f->win_x = tgetnum("co");
-	f->win_y = tgetnum("li");
 	ft_termcmd("ti");
-	ft_termcmd("ve");
+	ft_termcmd("vi");
 	ft_clrscreen(f->win_y);
 }
 
@@ -86,10 +84,13 @@ void		print_scren(t_sct *f)
 {
 	int		i;
 
-	ft_termcmd("ti");
-	// ft_termcmd("ve");
+	// ft_termcmd("ti");
 	i = -1;
-	// ft_printfcolor("Items selected: %d\n",f->total_selected, 32);
+	f->win_x = tgetnum("co");
+	f->win_y = tgetnum("li");
+	ft_clrscreen(f->win_y);
+	printf("%d\n", f->win_y);
+	ft_printfcolor("%s%d\n", "ITEMS SELECTED: ", 44, f->total_selected, 44);
 	while (f->objects[++i])
 	{
 		if (i == f->cursor)
@@ -101,8 +102,8 @@ void		print_scren(t_sct *f)
 		ft_termcmd("ue");
 		ft_termcmd("se");
 	}
-	printf("%d\n", f->cursor);
-	printf("%d\n", f->arg_height);
+	ft_printfbasic("%d\n", f->cursor);
+	ft_printfbasic("%d\n", f->arg_height);
 }
 
 void		key_up_down(t_sct *f, long key)
@@ -145,7 +146,8 @@ void		return_values(t_sct *f)
 
 	cont = 0;
 	i = -1;
-	ft_termcmd("ti");
+	ft_clrscreen(f->win_x);
+	ft_termcmd("ve");
 	while (f->objects[++i])
 	{
 		if (f->select[i] == 1)
