@@ -1,5 +1,99 @@
 #include "ft_select.h"
 
+int			window_sizevalidation(t_sct *f)
+{
+	int		j;
+
+	j = -1;
+	f->len = 0;
+	f->full = f->win_x * f->win_y;
+
+	while (f->objects[++j])
+	{
+		f->len += (int)ft_strlen(f->objects[j]) + 3;
+	}
+	printf("len: %d\n", f->len);
+	printf("full: %d\n", f->full);
+	return (f->len < f->full) ? 1 : 0;
+}
+
+t_sct		*get_t_sect(t_sct *f)
+{
+	static t_sct *h = NULL;
+
+	if (f)
+		h = f;
+	return (h);
+}
+void get_windows_size(int *i, int *y)
+{
+	struct winsize win;
+
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &win);
+	*i = win.ws_col;
+	*y = win.ws_row;
+}
+
+void		window_validation(int signum)
+{
+	t_sct	*f;
+	struct winsize win;
+	signum++;
+	f = get_t_sect(NULL);
+
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &win);
+	f->win_x = win.ws_col;
+	f->win_y = win.ws_row;
+	if (window_sizevalidation(f))
+		print_scren(f);
+	else
+		ft_printfcolor("%s", "No space :C\n", 31);
+		f->len = 0;
+}
+
+void		safe_exit(int signum)
+{
+	exit (3);
+}
+void		suspend_term(int signum)
+{
+	exit (3);
+}
+
+void		continue_term(int signum)
+{
+	exit (3);
+}
+
+void	set_signals(void)
+{
+	signal(SIGHUP, safe_exit);
+	signal(SIGINT, safe_exit);
+	signal(SIGQUIT, safe_exit);
+	signal(SIGILL, safe_exit);
+	signal(SIGTRAP, safe_exit);
+	signal(SIGABRT, safe_exit);
+	signal(SIGEMT, safe_exit);
+	signal(SIGFPE, safe_exit);
+	signal(SIGBUS, safe_exit);
+	signal(SIGSEGV, safe_exit);
+	signal(SIGSYS, safe_exit);
+	signal(SIGPIPE, safe_exit);
+	signal(SIGALRM, safe_exit);
+	signal(SIGTERM, safe_exit);
+	signal(SIGTTIN, safe_exit);
+	signal(SIGTTOU, safe_exit);
+	signal(SIGXCPU, safe_exit);
+	signal(SIGXFSZ, safe_exit);
+	signal(SIGVTALRM, safe_exit);
+	signal(SIGPROF, safe_exit);
+	signal(SIGUSR1, safe_exit);
+	signal(SIGUSR2, safe_exit);
+	signal(SIGTSTP, suspend_term);
+	signal(SIGCONT, continue_term);
+	signal(SIGWINCH, window_validation);
+}
+
 void		ft_error(char *error)
 {
 	ft_printfcolor("%s %s\n", "Error:", 31, error, 31);
@@ -24,7 +118,7 @@ int			max_width(char **mtx)
 
 void	ft_termcmd(char *str)
 {
-	if (!str || !*str)
+	if (str == NULL)
 		return ;
 	ft_putstr_fd(tgetstr(str, NULL), 2);
 }
@@ -37,7 +131,7 @@ void	ft_cursor_goto(int x, int y)
 	if ((str1 = tgetstr("cm", NULL)) != NULL)
 	{
 		if ((str2 = tgoto(str1, x, y)) != NULL)
-			ft_putstr_fd(str2, STDERR_FILENO);
+			ft_putstr_fd(str2, 2);
 	}
 }
 
@@ -67,11 +161,12 @@ void		starting_env(t_sct *f)
 	tcsetattr(0, TCSADRAIN, &f->term);
 	ft_termcmd("ti");
 	ft_termcmd("vi");
-	ft_clrscreen(f->win_y);
 }
 
 void		starting_f(int	argc, char	**argv, t_sct *f)
 {
+	f->len = 0;
+	f->full = 0;
 	f->cursor = 0;
 	f->total_selected = 0;
 	f->arg_height = argc - 1;
@@ -80,63 +175,43 @@ void		starting_f(int	argc, char	**argv, t_sct *f)
 	f->select = (int *)ft_memalloc(sizeof(int) * f->arg_height);
 }
 
+void		ft_putcharn_fd(int c, int n, int fd)
+{
+	while (n)
+	{
+		ft_putchar_fd(c, fd);
+		n--;
+	}
+}
+
 void		print_scren(t_sct *f)
 {
 	int		i;
-
+	int		col;
+	int		row;
 	// ft_termcmd("ti");
+	int		huevos;
+	row = -1;
+	col = 0;
 	i = -1;
-	f->win_x = tgetnum("co");
-	f->win_y = tgetnum("li");
-	ft_clrscreen(f->win_y);
-	printf("%d\n", f->win_y);
-	ft_printfcolor("%s%d\n", "ITEMS SELECTED: ", 44, f->total_selected, 44);
+	// ft_clrscreen(f->win_y);
+	// ft_printfcolor("%s%d\n", "ITEMS SELECTED: ", 44, f->total_selected, 44);
+	ft_cursor_goto(0, 0);
 	while (f->objects[++i])
 	{
-		if (i == f->cursor)
-			ft_termcmd("us");
-		if (f->select[i] == 1)
-			ft_termcmd("so");
-		ft_putstr_fd(f->objects[i], 2);
-		 printf("\n");
-		ft_termcmd("ue");
-		ft_termcmd("se");
+			if (i == f->cursor)
+				ft_termcmd("us");
+			if (f->select[i] == 1)
+				ft_termcmd("so");
+			ft_putstr_fd(f->objects[i], 2);
+			ft_termcmd("ue");
+			ft_termcmd("se");
+			ft_putcharn_fd(' ',f->arg_width - (int)ft_strlen(f->objects[i]) + 3 ,2);
+			printf("\n");
 	}
-	ft_printfbasic("%d\n", f->cursor);
-	ft_printfbasic("%d\n", f->arg_height);
-}
-
-void		key_up_down(t_sct *f, long key)
-{
-	if (key == KEY_DOWN)
-	{
-		if (f->cursor == (f->arg_height - 1))
-			f->cursor = 0;
-		else if (f->cursor < f->arg_height)
-			f->cursor += 1;
-	}
-	else if (key == KEY_UP)
-	{
-		if (f->cursor == 0)
-			f->cursor = (f->arg_height - 1);
-		else
-			f->cursor -= 1;
-	}
-}
-
-static void		key_space(t_sct *f, long key)
-{
-	if (f->select[f->cursor] == 0)
-		{
-			f->select[f->cursor] = 1;
-			f->total_selected += 1;
-		}
-	else
-	{
-		f->select[f->cursor] = 0;
-		f->total_selected -= 1;
-	}
-	key_up_down(f, KEY_DOWN);
+			// printf("%d\n", f->arg_width - (int)ft_strlen(f->objects[i]) + 1);
+	// ft_printfbasic("%d\n", f->cursor);
+	// ft_printfbasic("%d\n", f->win_y);
 }
 
 void		return_values(t_sct *f)
@@ -162,36 +237,6 @@ void		return_values(t_sct *f)
 	exit (EXIT_SUCCESS);
 }
 
-void		read_key(t_sct *f)
-{
-	long	key;
-	int		refresh;
-
-	print_scren(f);
-	key = 0;
-	while ((read(0, &key, 8)) != 0)
-	{
-		refresh = 1;
-		if (key == KEY_BSP || key == KEY_DEL)
-			printf("del\n");
-		else if (key == KEY_UP || key == KEY_DOWN ||
-				key == KEY_LEFT || key == KEY_RIGHT)
-			key_up_down(f, key);
-		else if (key == KEY_SPC)
-			key_space(f, key);
-		else if (key == KEY_ENTER)
-			return_values(f);
-		else if (key == KEY_STAR || key == KEY_MINUS)
-			printf("minus\n");
-		else if (key == KEY_ESC)
-			exit(0);
-		else
-			refresh = 0;
-		(refresh) ? print_scren(f) : 0;
-		key = 0;
-	}
-}
-
 int			main(int argc, char **argv)
 {
 	t_sct	f;
@@ -201,9 +246,13 @@ int			main(int argc, char **argv)
 	i = -1;
 	if (argc < 2)
 		ft_error("No arguments");
+	set_signals();
 	starting_env(&f);
 	starting_f(argc, argv, &f);
+	get_t_sect(&f);
 	ft_cursor_goto(0, 0);
+	window_validation(0);
+	// print_scren(&f);
 	read_key(&f);
 	return (0);
 }

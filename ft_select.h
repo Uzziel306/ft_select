@@ -4,6 +4,7 @@
 #include <term.h>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <signal.h>
 
 # define KEY_ENTER		10
 # define KEY_ESC		27
@@ -28,6 +29,14 @@ typedef struct		s_sct
 	int				win_y;
 	int				cursor;
 	int				total_selected;
-}					t_sct;
+	int				len;
+	int				full;
+}						t_sct;
+
+void					print_scren(t_sct *f);
+void					read_key(t_sct *f);
+void					key_up_down(t_sct *f, long key);
+void					return_values(t_sct *f);
+static void		key_space(t_sct *f, long key);
 
 #endif
