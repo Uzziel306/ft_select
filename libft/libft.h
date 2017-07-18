@@ -25,6 +25,10 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdarg.h>
+# include <term.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+# include <signal.h>
 
 typedef struct		s_list
 {
@@ -112,5 +116,9 @@ void				ft_printfcolor(const char *format, ...);
 void				ft_printfbasic(const char *format, ...);
 void				ft_putmatrix(char **mtx);
 void				ft_free_mtx(char **mtx);
+void				ft_cursor_goto(int x, int y);
+void				ft_termcmd(char *str);
+void				ft_clrscreen(int rows);
+void				ft_error(char *error);
 
 #endif

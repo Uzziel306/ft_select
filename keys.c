@@ -21,7 +21,7 @@ void		read_key(t_sct *f)
 		else if (key == KEY_STAR || key == KEY_MINUS)
 			printf("minus\n");
 		else if (key == KEY_ESC)
-			exit(0);
+			exit_esc();
 		else
 			refresh = 0;
 		(refresh) ? print_scren(f) : 0;

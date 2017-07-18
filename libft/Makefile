@@ -73,7 +73,11 @@ SRC = ft_bzero.c \
 		ft_printf_color.c\
 		ft_printf_basic.c\
 		ft_putmatrix.c\
-		ft_free_mtx.c
+		ft_free_mtx.c\
+		ft_cursor_goto.c\
+		ft_termcmd.c\
+		ft_clrscreen.c\
+		ft_error.c
 OBJ = $(SRC:.c=.o)
 
 # all rule

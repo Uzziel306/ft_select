@@ -31,12 +31,38 @@ typedef struct		s_sct
 	int				total_selected;
 	int				len;
 	int				full;
-}						t_sct;
-
-void					print_scren(t_sct *f);
-void					read_key(t_sct *f);
-void					key_up_down(t_sct *f, long key);
-void					return_values(t_sct *f);
-static void		key_space(t_sct *f, long key);
-
+}					t_sct;
+/*
+**Windows functions		windows.c
+*/
+void				print_scren(t_sct *f);
+int					window_sizevalidation(t_sct *f);
+void				window_validation(int signum);
+/*
+**Keyboard's functions	keys.c
+*/
+void				read_key(t_sct *f);
+void				key_up_down(t_sct *f, long key);
+static void			key_space(t_sct *f, long key);
+/*
+**Signal's functions	signals.c
+*/
+void				set_signals(void);
+void				continue_term(int signum);
+void				suspend_term(int signum);
+void				safe_exit(int signum);
+/*
+**Helper's functions	helper.c
+*/
+int					max_width(char **mtx);
+void				exit_esc(void);
+t_sct				*get_t_sect(t_sct *f);
+void				ft_putcharn_fd(int c, int n, int fd);
+int					max_width(char **mtx);
+/*
+**Main's functions		main.c
+*/
+void				return_values(t_sct *f);
+void				starting_f(int	argc, char	**argv, t_sct *f);
+void				starting_env(t_sct *f);
 #endif
