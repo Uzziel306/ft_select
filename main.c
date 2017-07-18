@@ -73,7 +73,7 @@ int			main(int argc, char **argv)
 	read_key(&f);
 	return (0);
 }
-// gcc main.c -ltermcap -o ft_select && ./ft_select
+// gcc *.c -ltermcap libft/libft.a -o ft_select && ./ft_select *
 	// mtx = ft_strsplit("huevos pendejo de mierda", ' ');
 	// tmp = mtx + 1;
 	// ft_putmatrix(tmp);

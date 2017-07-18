@@ -35,7 +35,8 @@ typedef struct		s_sct
 /*
 **Windows functions		windows.c
 */
-void				print_scren(t_sct *f);
+void				ft_putitem_fd(char *str, t_sct *f, int i);
+void				print_scren(t_sct *f, int i, int tmp, int huevos);
 int					window_sizevalidation(t_sct *f);
 void				window_validation(int signum);
 /*
