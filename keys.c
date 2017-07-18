@@ -41,6 +41,23 @@ void		read_key(t_sct *f)
 	}
 }
 
+void		key_left_right(t_sct *f, long key)
+{
+	int		tmp;
+
+	tmp = f->cursor;
+	if (key == KEY_RIGHT)
+	{
+		if ((tmp + f->win_y) < f->arg_height)
+			f->cursor = (tmp + f->win_y);
+	}
+	else if (key == KEY_LEFT)
+	{
+		if ((tmp - f->win_y) < f->arg_height && (tmp - f->win_y) >= 0)
+			f->cursor = (tmp - f->win_y);
+	}
+}
+
 void		key_up_down(t_sct *f, long key)
 {
 	if (key == KEY_DOWN)
@@ -57,6 +74,8 @@ void		key_up_down(t_sct *f, long key)
 		else
 			f->cursor -= 1;
 	}
+	else if (key == KEY_LEFT || key == KEY_RIGHT)
+		key_left_right(f, key);
 }
 
 static void		key_space(t_sct *f, long key)
