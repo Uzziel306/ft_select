@@ -7,6 +7,8 @@
 #include <signal.h>
 
 # define KEY_ENTER		10
+# define KEY_RESET		114
+# define KEY_SELECT		115
 # define KEY_ESC		27
 # define KEY_SPC		32
 # define KEY_STAR		42
@@ -23,6 +25,7 @@ typedef struct		s_sct
 	struct termios	term;
 	char			**objects;
 	int				*select;
+	int				tmp;
 	int				arg_height;
 	int				arg_width;
 	int				win_x;
@@ -35,7 +38,7 @@ typedef struct		s_sct
 /*
 **Windows functions		windows.c
 */
-int					ft_putitem_fd(char *str, t_sct *f, int i);
+void				ft_putitem_fd(char *str, t_sct *f, int i);
 void				print_scren(t_sct *f, int i, int tmp, int huevos);
 int					window_sizevalidation(t_sct *f);
 void				window_validation(int signum);
@@ -45,6 +48,7 @@ void				window_validation(int signum);
 void				read_key(t_sct *f);
 void				key_up_down(t_sct *f, long key);
 static void			key_space(t_sct *f, long key);
+void				key_del_res(t_sct *f, long key);
 /*
 **Signal's functions	signals.c
 */

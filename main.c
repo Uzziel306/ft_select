@@ -24,6 +24,7 @@ void		starting_f(int	argc, char	**argv, t_sct *f)
 	f->len = 0;
 	f->full = 0;
 	f->cursor = 0;
+	f->tmp = 0;
 	f->total_selected = 0;
 	f->arg_height = argc - 1;
 	f->objects = argv + 1;
@@ -67,9 +68,7 @@ int			main(int argc, char **argv)
 	starting_env(&f);
 	starting_f(argc, argv, &f);
 	get_t_sect(&f);
-	ft_cursor_goto(0, 0);
 	window_validation(0);
-	// print_scren(&f);
 	read_key(&f);
 	return (0);
 }

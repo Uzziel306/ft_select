@@ -21,8 +21,8 @@ void		read_key(t_sct *f)
 	while ((read(0, &key, 8)) != 0)
 	{
 		refresh = 1;
-		if (key == KEY_BSP || key == KEY_DEL)
-			printf("del\n");
+		if (key == KEY_BSP || key == KEY_DEL || key == KEY_RESET)
+			key_del_res(f, key);
 		else if (key == KEY_UP || key == KEY_DOWN ||
 				key == KEY_LEFT || key == KEY_RIGHT)
 			key_up_down(f, key);
@@ -36,7 +36,7 @@ void		read_key(t_sct *f)
 			exit_esc();
 		else
 			refresh = 0;
-		(refresh) ? print_scren(f, 0, 1, -1) : 0;
+		(refresh) ? window_validation(0) : 0;
 		key = 0;
 	}
 }
@@ -91,4 +91,22 @@ static void		key_space(t_sct *f, long key)
 		f->total_selected -= 1;
 	}
 	key_up_down(f, KEY_DOWN);
+}
+
+void			key_del_res(t_sct *f, long key)
+{
+	int			i;
+
+	i = -1;
+	if (key == KEY_DEL || key == KEY_BSP)
+	{
+		f->select[f->cursor] = 2;
+		key_up_down(f, KEY_DOWN);
+	}
+	else if (key == KEY_RESET)
+	{
+		while (++i <= f->arg_height)
+			f->select[i] = 0;
+		f->cursor = 0;
+	}
 }

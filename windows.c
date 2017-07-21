@@ -10,18 +10,20 @@ int		ft_strlen_val(char *str, t_sct *f)
 	return (len + diff);
 }
 
-int			ft_putitem_fd(char *str, t_sct *f, int i)
+void			ft_putitem_fd(char *str, t_sct *f, int i)
 {
-	if (i == f->cursor)
-		ft_termcmd("us");
-	if (f->select[i] == 1)
-		ft_termcmd("so");
-	ft_putstr_fd(f->objects[i], 2);
-	ft_termcmd("ue");
-	ft_termcmd("se");
-	ft_putcharn_fd(' ',f->arg_width - (int)ft_strlen(f->objects[i]) + 3 ,2);
-	return ((int)ft_strlen(f->objects[i]) + 3);
-
+	if (f->select[i] != 2)
+	{
+		if (i == f->cursor)
+			ft_termcmd("us");
+		if (f->select[i] == 1)
+			ft_termcmd("so");
+		ft_putstr_fd(f->objects[i], 2);
+		ft_termcmd("ue");
+		ft_termcmd("se");
+		ft_putcharn_fd(' ',f->arg_width - (int)ft_strlen(f->objects[i]) + 3 ,2);
+		f->tmp += 1;
+	}
 }
 
 void		print_scren(t_sct *f, int i, int tmp, int huevos)
