@@ -59,6 +59,7 @@ void				safe_exit(int signum);
 /*
 **Helper's functions	helper.c
 */
+int					ft_validation(t_sct *f);
 int					max_width(char **mtx);
 void				exit_esc(void);
 t_sct				*get_t_sect(t_sct *f);

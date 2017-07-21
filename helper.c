@@ -1,5 +1,18 @@
 #include "ft_select.h"
 
+int		ft_validation(t_sct *f)
+{
+	int		i;
+
+	i = -1;
+	while (++i <= f->arg_height)
+	{
+		if (f->select[i] != 2)
+			return (1);
+	}
+	return (0);
+}
+
 void		ft_putcharn_fd(int c, int n, int fd)
 {
 	while (n)

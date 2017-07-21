@@ -32,7 +32,11 @@ void		print_scren(t_sct *f, int i, int tmp, int huevos)
 	// ft_printfcolor("%s%d\n", "ITEMS SELECTED: ", 44, f->total_selected, 44);
 	while (huevos <= f->win_y && f->objects[i])
 	{
-		ft_cursor_goto(0, huevos);
+		if (f->select[huevos] != 2)
+		{
+			ft_cursor_goto(0, tmp);
+			tmp ++;
+		}
 		ft_putitem_fd(f->objects[huevos], f, huevos);
 		while (42)
 		{
@@ -81,13 +85,15 @@ void		window_validation(int signum)
 	t_sct	*f;
 	struct winsize win;
 
+	if (!ft_validation(f))
+		exit_esc();
 	signum++;
 	f = get_t_sect(NULL);
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &win);
 	f->win_x = win.ws_col;
 	f->win_y = win.ws_row;
 	if (window_sizevalidation(f))
-		print_scren(f, 0, 1, 0);
+		print_scren(f, 0, 0, 0);
 	else
 	{
 		ft_clrscreen(f->win_y);

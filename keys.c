@@ -101,7 +101,15 @@ void			key_del_res(t_sct *f, long key)
 	if (key == KEY_DEL || key == KEY_BSP)
 	{
 		f->select[f->cursor] = 2;
-		key_up_down(f, KEY_DOWN);
+		i = f->cursor;
+		while(++i <= f->arg_height)
+		{
+			if (f->select[i] != 2)
+			{
+				f->cursor = i;
+				return ;
+			}
+		}
 	}
 	else if (key == KEY_RESET)
 	{
