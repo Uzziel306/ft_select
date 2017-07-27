@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helper.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asolis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/26 21:16:19 by asolis            #+#    #+#             */
+/*   Updated: 2017/07/26 21:16:20 by asolis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_select.h"
 
 void	ft_arr_remove_nth(int nth, void *array, size_t size, int len)
@@ -48,6 +60,7 @@ void		exit_esc(void)
 
 	f = get_t_sect(NULL);
 	ft_memdel((void**)&f->select);
+	ft_termcmd("te");
 	ft_termcmd("ve");
 	exit (3);
 }

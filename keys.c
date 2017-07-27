@@ -62,7 +62,7 @@ void		key_up_down(t_sct *f, long key)
 {
 	if (key == KEY_DOWN)
 	{
-		if (f->cursor == (f->arg_height - 1))
+		if (f->cursor == (f->tata - 1))
 			f->cursor = 0;
 		else if (f->cursor < f->arg_height)
 			f->cursor += 1;
@@ -70,7 +70,7 @@ void		key_up_down(t_sct *f, long key)
 	else if (key == KEY_UP)
 	{
 		if (f->cursor == 0)
-			f->cursor = (f->arg_height - 1);
+			f->cursor = (f->tata - 1);
 		else
 			f->cursor -= 1;
 	}
@@ -105,6 +105,8 @@ void			key_del_res(t_sct *f, long key)
 			key_up_down(f, KEY_DOWN);
 			f->del += 1;
 			f->tata -= 1;
+			if (f->tata == 0)
+				exit_esc(	);
 	}
 	else if (key == KEY_RESET)
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   windows.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: asolis <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/07/26 21:15:06 by asolis            #+#    #+#             */
+/*   Updated: 2017/07/26 21:15:07 by asolis           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_select.h"
 
 int		ft_strlen_val(char *str, t_sct *f)
@@ -22,7 +34,8 @@ void			ft_putitem_fd(char *str, t_sct *f, int i)
 		ft_putstr_fd(f->objects[i], 2);
 		ft_termcmd("ue");
 		ft_termcmd("se");
-		ft_putcharn_fd(' ',f->arg_width - (int)ft_strlen(f->objects[i]) + 3 ,2);
+		ft_putcharn_fd(' ',f->arg_width - (int)ft_strlen(f
+			->objects[i]) + 3 ,2);
 		f->tmp += 1;
 }
 
@@ -48,7 +61,8 @@ void		print_scren(t_sct *f, int i, int columna, int huevos)
 	}
 }
 
-int			window_sizevalidation(t_sct *f, int i, int huevos, int columna)
+int			window_sizevalidation(t_sct *f
+	, int i, int huevos, int columna)
 {
 	int		len;
 
