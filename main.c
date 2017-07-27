@@ -28,6 +28,7 @@ void		starting_f(int	argc, char	**argv, t_sct *f)
 	f->total_selected = 0;
 	f->arg_height = argc - 1;
 	f->objects = argv + 1;
+	f->del = 0;
 	f->arg_width = max_width(f->objects);
 	f->select = (int *)ft_memalloc(sizeof(int) * f->arg_height);
 }
@@ -40,6 +41,7 @@ void		return_values(t_sct *f)
 	cont = 0;
 	i = -1;
 	ft_clrscreen(f->win_x);
+	ft_termcmd("te");
 	ft_termcmd("ve");
 	while (f->objects[++i])
 	{

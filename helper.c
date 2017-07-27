@@ -1,16 +1,11 @@
 #include "ft_select.h"
 
-int		ft_validation(t_sct *f)
+void	ft_arr_remove_nth(int nth, void *array, size_t size, int len)
 {
-	int		i;
+	unsigned char	*elem;
 
-	i = -1;
-	while (++i <= f->arg_height)
-	{
-		if (f->select[i] != 2)
-			return (1);
-	}
-	return (0);
+	elem = (((unsigned char *)array) + (nth * size));
+	ft_memmove((void *)elem, (void *)(elem + size), (len - nth - 1) * size);
 }
 
 void		ft_putcharn_fd(int c, int n, int fd)

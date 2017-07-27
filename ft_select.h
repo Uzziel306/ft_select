@@ -34,13 +34,15 @@ typedef struct		s_sct
 	int				total_selected;
 	int				len;
 	int				full;
+	int				del;
+	int				tata;
 }					t_sct;
 /*
 **Windows functions		windows.c
 */
 void				ft_putitem_fd(char *str, t_sct *f, int i);
 void				print_scren(t_sct *f, int i, int tmp, int huevos);
-int					window_sizevalidation(t_sct *f);
+int					window_sizevalidation(t_sct *f, int i, int huevos, int columna);
 void				window_validation(int signum);
 /*
 **Keyboard's functions	keys.c
@@ -59,6 +61,7 @@ void				safe_exit(int signum);
 /*
 **Helper's functions	helper.c
 */
+void				ft_arr_remove_nth(int nth, void *array, size_t size, int len);
 int					ft_validation(t_sct *f);
 int					max_width(char **mtx);
 void				exit_esc(void);
