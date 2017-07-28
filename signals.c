@@ -6,7 +6,7 @@
 /*   By: asolis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/26 21:08:05 by asolis            #+#    #+#             */
-/*   Updated: 2017/07/26 21:08:12 by asolis           ###   ########.fr       */
+/*   Updated: 2017/07/27 20:00:39 by asolis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,47 @@
 
 void		safe_exit(int signum)
 {
-	exit (3);
+	t_sct	*f;
+
+	signum++;
+	f = get_t_sect(0);
+	ft_memdel((void**)&f->select);
+	ft_termcmd("te");
+	ft_termcmd("ve");
+	exit(3);
 }
+
 void		suspend_term(int signum)
 {
-	exit (3);
+	t_sct	*f;
+	char	tmp[3];
+
+	signum++;
+	f = get_t_sect(0);
+	ft_clrscreen(f->win_y);
+	f->term.c_lflag |= (ICANON | ECHO);
+	tcsetattr(0, TCSANOW, &f->term);
+	ft_termcmd("te");
+	ft_termcmd("ve");
+	signal(SIGTSTP, SIG_DFL);
+	tmp[0] = f->term.c_cc[VSUSP];
+	tmp[1] = '\n';
+	tmp[2] = '\0';
+	ioctl(0, TIOCSTI, &tmp);
 }
 
 void		continue_term(int signum)
 {
-	exit (3);
+	t_sct	*f;
+
+	signum++;
+	f = get_t_sect(0);
+	starting_env(f);
+	set_signals();
+	window_validation(0);
 }
 
-void	set_signals(void)
+void		set_signals(void)
 {
 	signal(SIGHUP, safe_exit);
 	signal(SIGINT, safe_exit);

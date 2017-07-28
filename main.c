@@ -6,7 +6,7 @@
 /*   By: asolis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/26 21:11:55 by asolis            #+#    #+#             */
-/*   Updated: 2017/07/26 21:11:56 by asolis           ###   ########.fr       */
+/*   Updated: 2017/07/27 19:53:02 by asolis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void		starting_env(t_sct *f)
 	ft_termcmd("vi");
 }
 
-void		starting_f(int	argc, char	**argv, t_sct *f)
+void		starting_f(int argc, char **argv, t_sct *f)
 {
 	f->len = 0;
 	f->full = 0;
@@ -66,14 +66,13 @@ void		return_values(t_sct *f)
 		}
 	}
 	ft_memdel((void**)&f->select);
-	exit (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 int			main(int argc, char **argv)
 {
 	t_sct	f;
 	int		i;
-	char	*s;
 
 	i = -1;
 	if (argc < 2)
@@ -86,7 +85,3 @@ int			main(int argc, char **argv)
 	read_key(&f);
 	return (0);
 }
-// gcc *.c -ltermcap libft/libft.a -o ft_select && ./ft_select *
-	// mtx = ft_strsplit("huevos pendejo de mierda", ' ');
-	// tmp = mtx + 1;
-	// ft_putmatrix(tmp);

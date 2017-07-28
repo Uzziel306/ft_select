@@ -6,16 +6,16 @@
 /*   By: asolis <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/17 18:46:49 by asolis            #+#    #+#             */
-/*   Updated: 2017/07/17 18:46:54 by asolis           ###   ########.fr       */
+/*   Updated: 2017/07/27 19:57:25 by asolis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_select.h"
 
-void		read_key(t_sct *f)
+void			read_key(t_sct *f)
 {
-	long	key;
-	int		refresh;
+	long		key;
+	int			refresh;
 
 	key = 0;
 	while ((read(0, &key, 8)) != 0)
@@ -27,7 +27,7 @@ void		read_key(t_sct *f)
 				key == KEY_LEFT || key == KEY_RIGHT)
 			key_up_down(f, key);
 		else if (key == KEY_SPC)
-			key_space(f, key);
+			key_space(f);
 		else if (key == KEY_ENTER)
 			return_values(f);
 		else if (key == KEY_STAR || key == KEY_MINUS)
@@ -41,9 +41,9 @@ void		read_key(t_sct *f)
 	}
 }
 
-void		key_left_right(t_sct *f, long key)
+void			key_left_right(t_sct *f, long key)
 {
-	int		tmp;
+	int			tmp;
 
 	tmp = f->cursor;
 	if (key == KEY_RIGHT)
@@ -58,7 +58,7 @@ void		key_left_right(t_sct *f, long key)
 	}
 }
 
-void		key_up_down(t_sct *f, long key)
+void			key_up_down(t_sct *f, long key)
 {
 	if (key == KEY_DOWN)
 	{
@@ -78,13 +78,13 @@ void		key_up_down(t_sct *f, long key)
 		key_left_right(f, key);
 }
 
-static void		key_space(t_sct *f, long key)
+void		key_space(t_sct *f)
 {
 	if (f->select[f->cursor] == 0)
-		{
-			f->select[f->cursor] = 1;
-			f->total_selected += 1;
-		}
+	{
+		f->select[f->cursor] = 1;
+		f->total_selected += 1;
+	}
 	else
 	{
 		f->select[f->cursor] = 0;
@@ -100,13 +100,13 @@ void			key_del_res(t_sct *f, long key)
 	i = -1;
 	if (key == KEY_DEL || key == KEY_BSP)
 	{
-			ft_arr_remove_nth(f->cursor, f->objects, sizeof(char *), f->arg_height);
-			ft_arr_remove_nth(f->cursor, f->select, sizeof(int), f->arg_height);
-			key_up_down(f, KEY_DOWN);
-			f->del += 1;
-			f->tata -= 1;
-			if (f->tata == 0)
-				exit_esc(	);
+		ft_arr_remove_nth(f->cursor, f->objects, sizeof(char *), f->arg_height);
+		ft_arr_remove_nth(f->cursor, f->select, sizeof(int), f->arg_height);
+		key_up_down(f, KEY_DOWN);
+		f->del += 1;
+		f->tata -= 1;
+		if (f->tata == 0)
+			exit_esc();
 	}
 	else if (key == KEY_RESET)
 	{
