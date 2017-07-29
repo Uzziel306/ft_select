@@ -57,14 +57,14 @@ void		return_values(t_sct *f)
 	ft_clrscreen(f->win_x);
 	ft_termcmd("te");
 	ft_termcmd("ve");
-	while (++i < f->tata)
+	while (++i < f->tata && f->objects[i])
 	{
 		if (f->select[i] == 1)
 		{
-			ft_printfbasic("%s", f->objects[i]);
+			ft_putstr_fd(f->objects[i], 2);
 			cont += 1;
 			if (cont != f->total_selected)
-				ft_putchar(' ');
+				ft_putchar_fd(' ', 2);
 		}
 	}
 	ft_memdel((void**)&f->select);
