@@ -57,7 +57,7 @@ void		return_values(t_sct *f)
 	ft_clrscreen(f->win_x);
 	ft_termcmd("te");
 	ft_termcmd("ve");
-	while (f->objects[++i])
+	while (++i < f->tata)
 	{
 		if (f->select[i] == 1)
 		{

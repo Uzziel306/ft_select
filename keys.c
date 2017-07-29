@@ -106,6 +106,8 @@ void			key_del_res(t_sct *f, long key)
 	i = -1;
 	if (key == KEY_DEL || key == KEY_BSP)
 	{
+		f->select[f->cursor] = 0;
+		f->total_selected -= 1;
 		ft_arr_remove_nth(f->cursor, f->objects, sizeof(char *), f->arg_height);
 		ft_arr_remove_nth(f->cursor, f->select, sizeof(int), f->arg_height);
 		key_up_down(f, KEY_DOWN);
