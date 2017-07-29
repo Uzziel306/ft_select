@@ -38,8 +38,10 @@ void		starting_f(int argc, char **argv, t_sct *f)
 	f->cursor = 0;
 	f->tmp = 0;
 	f->total_selected = 0;
+	f->menu = 0;
 	f->arg_height = argc - 1;
 	f->objects = argv + 1;
+	f->obj_tmp = argv + 1;
 	f->del = 0;
 	f->arg_width = max_width(f->objects);
 	f->select = (int *)ft_memalloc(sizeof(int) * f->arg_height);

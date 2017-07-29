@@ -4,7 +4,8 @@ SRC		=	main.c \
 			helper.c \
 			keys.c \
 			signals.c \
-			windows.c
+			windows.c \
+			menu.c
 
 OBJ		= $(SRC:.c=.o)
 
@@ -17,7 +18,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@make -C libft/
 	@$(CC) $(OBJ) -ltermcap -o $(NAME) -L libft/ -lft
-	@echo "\033[32mft_select: Built minishell. (˘▾˘) \033[0m"
+	@echo "\033[32mft_select: Built ft_select. (˘▾˘) \033[0m"
 
 clean:
 	@make -C libft/ clean

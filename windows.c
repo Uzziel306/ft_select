@@ -100,7 +100,12 @@ void				window_validation(int signum)
 	if (f->del == 0)
 		f->tata = f->arg_height;
 	if ((len = window_sizevalidation(f, 0, 0, 0)))
-		print_scren(f, 0, 0, 0);
+	{
+		if (f->menu == 1)
+			tetas(f);
+		else
+			print_scren(f, 0, 0, 0);
+	}
 	else
 	{
 		ft_clrscreen(f->win_y);

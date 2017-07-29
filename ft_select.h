@@ -31,11 +31,15 @@
 # define KEY_RIGHT		4414235
 # define KEY_DOWN		4348699
 # define KEY_DEL		2117294875L
+# define K_S			115
+# define K_D			100
+# define K_R			114
 
 typedef struct		s_sct
 {
 	struct termios	term;
 	char			**objects;
+	char			**obj_tmp;
 	int				*select;
 	int				tmp;
 	int				arg_height;
@@ -48,6 +52,7 @@ typedef struct		s_sct
 	int				full;
 	int				del;
 	int				tata;
+	int				menu;
 }					t_sct;
 /*
 **Windows functions		windows.c
@@ -62,8 +67,9 @@ void				window_validation(int signum);
 */
 void				read_key(t_sct *f);
 void				key_up_down(t_sct *f, long key);
-void			key_space(t_sct *f);
+void				key_space(t_sct *f, long key);
 void				key_del_res(t_sct *f, long key);
+void				key_s_d_r(t_sct *f, long key);
 /*
 **Signal's functions	signals.c
 */
@@ -85,7 +91,9 @@ int					max_width(char **mtx);
 /*
 **Main's functions		main.c
 */
+void				tetas(t_sct *f);
 void				return_values(t_sct *f);
 void				starting_f(int	argc, char	**argv, t_sct *f);
 void				starting_env(t_sct *f);
+void				tetas2(t_sct *f);
 #endif

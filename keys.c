@@ -26,12 +26,12 @@ void			read_key(t_sct *f)
 		else if (key == KEY_UP || key == KEY_DOWN ||
 				key == KEY_LEFT || key == KEY_RIGHT)
 			key_up_down(f, key);
-		else if (key == KEY_SPC)
-			key_space(f);
+		else if (key == KEY_SPC || key == K_S || key == K_D || key == K_R)
+			key_space(f, key);
 		else if (key == KEY_ENTER)
 			return_values(f);
 		else if (key == KEY_STAR || key == KEY_MINUS)
-			printf("minus\n");
+			f->menu = (f->menu) ? 0 : 1;
 		else if (key == KEY_ESC)
 			exit_esc();
 		else
@@ -48,7 +48,7 @@ void			key_left_right(t_sct *f, long key)
 	tmp = f->cursor;
 	if (key == KEY_RIGHT)
 	{
-		if ((tmp + f->win_y) < f->arg_height)
+		if ((tmp + f->win_y) < f->tata)
 			f->cursor = (tmp + f->win_y);
 	}
 	else if (key == KEY_LEFT)
@@ -78,19 +78,25 @@ void			key_up_down(t_sct *f, long key)
 		key_left_right(f, key);
 }
 
-void		key_space(t_sct *f)
+void			key_space(t_sct *f, long key)
 {
-	if (f->select[f->cursor] == 0)
-	{
-		f->select[f->cursor] = 1;
-		f->total_selected += 1;
-	}
+	if (key != KEY_SPC)
+		key_s_d_r(f, key);
 	else
 	{
-		f->select[f->cursor] = 0;
-		f->total_selected -= 1;
+		key++;
+		if (f->select[f->cursor] == 0)
+		{
+			f->select[f->cursor] = 1;
+			f->total_selected += 1;
+		}
+		else
+		{
+			f->select[f->cursor] = 0;
+			f->total_selected -= 1;
+		}
+		key_up_down(f, KEY_DOWN);
 	}
-	key_up_down(f, KEY_DOWN);
 }
 
 void			key_del_res(t_sct *f, long key)
